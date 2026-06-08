@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Aplikasi Ujian Online</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:Segoe UI, Arial, sans-serif;
+}
+
+#loading{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#ffffff;
+    z-index:9999;
+}
+
+.loader{
+    width:60px;
+    height:60px;
+    border:6px solid #e5e7eb;
+    border-top:6px solid #2563eb;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+    100%{
+        transform:rotate(360deg);
+    }
+}
+
+iframe{
+    width:100%;
+    height:100vh;
+    border:none;
+}
+</style>
+</head>
+
+<body>
+
+<div id="loading">
+    <div class="loader"></div>
+</div>
+
+<iframe
+    id="appFrame"
+    src="https://script.google.com/macros/s/AKfycbw5Xsmp6woWk5_pNaVsrg96l2IqLa6urfeguSTVLQ30_KpBEbLXb1Nuds3xoN2wV0tL/exec"
+    onload="hideLoader()">
+</iframe>
+
+<script>
+function hideLoader(){
+    document.getElementById('loading').style.display='none';
+}
+
+// Nonaktif klik kanan
+document.addEventListener('contextmenu', function(e){
+    e.preventDefault();
+});
+
+// Blok beberapa shortcut inspeksi
+document.addEventListener('keydown', function(e){
+
+    if(e.key === 'F12'){
+        e.preventDefault();
+    }
+
+    if(e.ctrlKey && e.shiftKey && (
+        e.key === 'I' ||
+        e.key === 'J' ||
+        e.key === 'C'
+    )){
+        e.preventDefault();
+    }
+
+    if(e.ctrlKey && e.key === 'u'){
+        e.preventDefault();
+    }
+
+});
+</script>
+
+</body>
+</html>
