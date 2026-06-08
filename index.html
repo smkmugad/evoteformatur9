@@ -1,50 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Pemilihan Formatur</title>
-  <style>body { font-family: sans-serif; padding: 20px; }</style>
+  <script src="https://script.google.com/macros/s/AKfycbyiIoNorGtuvu09YY83sGHgz_SzA8hneBXLd2z2FzCT1HWHbMViQYCbqViBexPNufNorg/exec"></script>
 </head>
-<body>
-  <h2>Form Pemilihan 9 Formatur</h2>
-  <input type="email" id="email" placeholder="Email Anda" required><br><br>
-  
-  <div id="kandidatList">
-    <p>Pilih 9 Kandidat:</p>
-    <input type="checkbox" name="kandidat" value="K01"> Kandidat 1<br>
-    <input type="checkbox" name="kandidat" value="K02"> Kandidat 2<br>
-    <input type="checkbox" name="kandidat" value="K03"> Kandidat 3<br>
-    <input type="checkbox" name="kandidat" value="K04"> Kandidat 4<br>
-    <input type="checkbox" name="kandidat" value="K05"> Kandidat 5<br>
-    <input type="checkbox" name="kandidat" value="K06"> Kandidat 6<br>
-    <input type="checkbox" name="kandidat" value="K07"> Kandidat 7<br>
-    <input type="checkbox" name="kandidat" value="K08"> Kandidat 8<br>
-    <input type="checkbox" name="kandidat" value="K09"> Kandidat 9<br>
-    <input type="checkbox" name="kandidat" value="K10"> Kandidat 10<br>
+<body class="bg-gray-100 font-sans">
+  <div id="loginPage" class="flex justify-center items-center h-screen">
+    <div class="bg-white p-8 rounded-xl shadow-lg w-96">
+      <h2 class="text-2xl font-bold mb-6 text-center">Login Pemilihan</h2>
+      <input id="user" class="w-full p-2 border rounded mb-3" placeholder="Username/Email">
+      <input id="pass" type="password" class="w-full p-2 border rounded mb-3" placeholder="Password">
+      <button onclick="login()" class="w-full bg-blue-600 text-white p-2 rounded">LOGIN</button>
+    </div>
   </div>
-  <br>
-  <button id="btnSubmit">Kirim Pilihan</button>
+
+  <div id="pemilihPage" class="hidden p-10">
+    <h2 class="text-2xl font-bold">Pilih 9 Formatur</h2>
+    <div id="kandidatContainer" class="grid grid-cols-2 gap-4 my-6">
+      <label><input type="checkbox" value="K1"> Kandidat 1</label>
+    </div>
+    <button onclick="kirim()" class="bg-green-600 text-white px-6 py-2 rounded">Kirim Suara</button>
+  </div>
 
   <script>
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyiIoNorGtuvu09YY83sGHgz_SzA8hneBXLd2z2FzCT1HWHbMViQYCbqViBexPNufNorg/exec';
+    function login() {
+      const u = document.getElementById('user').value;
+      const p = document.getElementById('pass').value;
+      google.script.run.withSuccessHandler(res => {
+        if(res.status === "success") {
+          document.getElementById('loginPage').classList.add('hidden');
+          document.getElementById('pemilihPage').classList.remove('hidden');
+        } else { alert(res.msg); }
+      }).prosesLogin(u, p);
+    }
 
-    document.getElementById('btnSubmit').addEventListener('click', async () => {
-      const email = document.getElementById('email').value;
-      const checked = document.querySelectorAll('input[name="kandidat"]:checked');
-      
-      if(checked.length !== 9) return alert("Wajib memilih tepat 9 kandidat!");
-      if(!email) return alert("Masukkan email!");
-
+    function kirim() {
+      const checked = document.querySelectorAll('input:checked');
+      if(checked.length !== 9) return alert("Wajib 9!");
       const pilihan = Array.from(checked).map(c => c.value);
-      
-      const res = await fetch(WEB_APP_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({email, pilihan})
-      });
-      
-      alert("Permintaan terkirim. Cek Sheets Anda!");
-    });
+      google.script.run.withSuccessHandler(() => {
+        alert("Berhasil, Anda akan logout.");
+        location.reload(); 
+      }).simpanSuara(document.getElementById('user').value, pilihan);
+    }
   </script>
 </body>
 </html>
