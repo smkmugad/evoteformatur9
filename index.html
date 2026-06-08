@@ -1,17 +1,50 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pemilihan 9 Formatur</title>
-
-<script>
-window.location.href =
-"https://script.google.com/macros/s/AKfycbw5Xsmp6woWk5_pNaVsrg96l2IqLa6urfeguSTVLQ30_KpBEbLXb1Nuds3xoN2wV0tL/exec";
-</script>
-
+  <title>Pemilihan Formatur</title>
+  <style>body { font-family: sans-serif; padding: 20px; }</style>
 </head>
 <body>
-<h2>Sedang mengalihkan ke aplikasi...</h2>
+  <h2>Form Pemilihan 9 Formatur</h2>
+  <input type="email" id="email" placeholder="Email Anda" required><br><br>
+  
+  <div id="kandidatList">
+    <p>Pilih 9 Kandidat:</p>
+    <input type="checkbox" name="kandidat" value="K01"> Kandidat 1<br>
+    <input type="checkbox" name="kandidat" value="K02"> Kandidat 2<br>
+    <input type="checkbox" name="kandidat" value="K03"> Kandidat 3<br>
+    <input type="checkbox" name="kandidat" value="K04"> Kandidat 4<br>
+    <input type="checkbox" name="kandidat" value="K05"> Kandidat 5<br>
+    <input type="checkbox" name="kandidat" value="K06"> Kandidat 6<br>
+    <input type="checkbox" name="kandidat" value="K07"> Kandidat 7<br>
+    <input type="checkbox" name="kandidat" value="K08"> Kandidat 8<br>
+    <input type="checkbox" name="kandidat" value="K09"> Kandidat 9<br>
+    <input type="checkbox" name="kandidat" value="K10"> Kandidat 10<br>
+  </div>
+  <br>
+  <button id="btnSubmit">Kirim Pilihan</button>
+
+  <script>
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyiIoNorGtuvu09YY83sGHgz_SzA8hneBXLd2z2FzCT1HWHbMViQYCbqViBexPNufNorg/exec';
+
+    document.getElementById('btnSubmit').addEventListener('click', async () => {
+      const email = document.getElementById('email').value;
+      const checked = document.querySelectorAll('input[name="kandidat"]:checked');
+      
+      if(checked.length !== 9) return alert("Wajib memilih tepat 9 kandidat!");
+      if(!email) return alert("Masukkan email!");
+
+      const pilihan = Array.from(checked).map(c => c.value);
+      
+      const res = await fetch(WEB_APP_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email, pilihan})
+      });
+      
+      alert("Permintaan terkirim. Cek Sheets Anda!");
+    });
+  </script>
 </body>
 </html>
